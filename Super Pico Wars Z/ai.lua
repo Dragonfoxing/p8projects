@@ -3,7 +3,7 @@
 function check_if_out_of_moves(player)
 	local b=true
 	for u in all(units) do
-		if(u.player==player and not u.idle) b=false
+		if(u.player==player and not is_unit_idle(u)) b=false
 	end
 	
 	return b
@@ -93,7 +93,8 @@ end
 
 function enemy_move_closest()
 	--unit and enemy unit
-	u = e_get_idle()
+	u = get_next_ready_unit(false)
+
 	if(u==nil) then
 		err=true
 		return 
@@ -112,26 +113,23 @@ function enemy_move_closest()
 			end
 		end
 	end
-	
+
 	--now we have closest enemy unit
 	--if we aren't in range, move
 	if(not e_chk_rng(u,eu)) then
 		local x=sgn(eu.x-u.x)*u.move
 		local y=sgn(eu.y-u.y)*u.move
 		
-		u.x+=x
-		u.y+=y
-		
-		u.moved=true
+		move_unit(u,x,y)
 
 		--if we aren't still in range,
 		--do nothing
 		if(not e_chk_rng(u,eu)) then
 			u.attacked=true
 			return
-		else damage_unit(u,eu.wepdmg)
+		else damage_unit(eu,u.wepdmg)
 		end
-	else damage_unit(u,eu.wepdmg)
+	else damage_unit(eu,u.wepdmg)
 	end
 	
 	u.moved=true

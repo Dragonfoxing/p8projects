@@ -21,9 +21,9 @@ function update_cursor()
 		
 		check_hovered()
 	end
-		
+	
 	if(phase==0) then
-		if(btnp(4) and hovered!=nil and hovered.player and not hovered.idle) then
+		if(btnp(4) and hovered!=nil and hovered.player and not is_unit_idle(hovered)) then
 		 selected=hovered
 		 phase=1
 		 get_movelist()
@@ -61,9 +61,6 @@ function update_cursor()
 		elseif(btnp(4) and contains_target(hovered)) then
 			--hovered.hp-=selected.wepdmg
 			damage_unit(hovered,selected.wepdmg)
-			if(not is_unit_alive(hovered)) then
-				del(units,hovered)
-			end
 			
 			selected.attacked=true
 			selected=nil

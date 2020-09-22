@@ -17,7 +17,6 @@ unit.hardened=false
 unit.move=2
 unit.wepdmg=2
 unit.weprng=6
-unit.idle=false
 unit.dist=0
 unit.close=nil
 
@@ -84,7 +83,7 @@ function draw_units()
 		
 		spr(u.teamspr, gposx(u.x), gposy(u.y))
 		if(u==selected) spr(11,gposx(u.x),gposy(u.y))
-		if(not u.idle and u.player) spr(27,gposx(u.x),gposy(u.y))
+		if(not is_unit_idle(u) and u.player) spr(27,gposx(u.x),gposy(u.y))
 	end
 end
 
@@ -114,6 +113,12 @@ function damage_unit(u,n)
 		if(u.sh<0) u.sh=0
 	else u.hp -= n end
 	if(not is_unit_alive(u)) then del(units,u) end
+end
+
+function move_unit(u,x,y)
+	u.x+=x
+	u.y+=y
+	u.moved=true
 end
 
 function is_unit_alive(e)
