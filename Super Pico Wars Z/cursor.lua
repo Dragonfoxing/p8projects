@@ -32,7 +32,7 @@ function update_cursor()
 		if(btnp(4) and contains_move(px,py)) then
 			selected.x=px
 			selected.y=py
-			
+			selected.moved=true
 			movelist=nil
 			
 			getfirelist(true)
@@ -50,7 +50,7 @@ function update_cursor()
 		--selecting own self for dmg
 		--ends ship selection, no dmg
 		if(btnp(4) and hovered==selected) then
-			selected.idle=true
+			selected.attacked=true
 			selected=nil
 			hovered=nil
 			check_hovered()
@@ -59,18 +59,19 @@ function update_cursor()
 				phase=0
 			end
 		elseif(btnp(4) and contains_target(hovered)) then
-			hovered.hp-=selected.wepdmg
+			--hovered.hp-=selected.wepdmg
+			damage_unit(hovered,selected.wepdmg)
 			if(not is_unit_alive(hovered)) then
 				del(units,hovered)
 			end
 			
-			selected.idle=true
+			selected.attacked=true
 			selected=nil
 			hovered=nil
 			movelist=nil
 			
 			check_hovered()
-			if(check_if_out_of_moves(true)==true) then phase=3
+			if(check_if_out_of_moves(true)) then phase=3
 			else
 				phase=0
 			end

@@ -11,6 +11,9 @@ unit.spr=20
 unit.teamspr=28
 unit.hp=8
 unit.sh=4
+unit.moved=false
+unit.attacked=false
+unit.hardened=false
 unit.move=2
 unit.wepdmg=2
 unit.weprng=6
@@ -103,8 +106,47 @@ end
 
 --misc functions
 
+function damage_unit(u,n)
+	if(u.sh>0) then
+		--backslash = int div
+		if(u.hardened) then u.sh-=(n\2)
+		else u.sh-=n end
+		if(u.sh<0) u.sh=0
+	else u.hp -= n end
+	if(not is_unit_alive(u)) then del(units,u) end
+end
+
 function is_unit_alive(e)
 	if(e.hp<=0) then return false
 	else return true
 	end
+end
+
+function is_unit_idle(u)
+	if(not u.moved or not u.attacked) then return false
+	else return true end
+end
+
+function get_next_ready_unit(player)
+	for u in all(units) do
+        if(u.player==player and not is_unit_idle(u)) then 
+            return u 
+        end
+    end
+end
+
+function ready_units(player)
+	for u in all(units) do
+		if(u.player==player) then
+			u.moved=false
+			u.attacked=false
+			u.hardened=false
+		end
+	end
+end
+
+function harden_shields(u)
+	u.moved=true
+	u.attacked=true
+	u.hardened=true
 end

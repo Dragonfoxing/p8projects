@@ -27,3 +27,13 @@ function contains(t,o)
 	
 	return false
 end
+
+--project-specific
+--grid-to-display conversion
+function gposx(x)
+	return gxoff+x*gxy
+end
+
+function gposy(y)
+	return gyoff+y*gxy
+end

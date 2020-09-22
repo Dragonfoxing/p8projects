@@ -95,7 +95,7 @@ function enemy_move_closest()
 	--unit and enemy unit
 	u = e_get_idle()
 	if(u==nil) then
-		err=true 
+		err=true
 		return 
 	end
 	--if(u==nil) then return end
@@ -122,17 +122,20 @@ function enemy_move_closest()
 		u.x+=x
 		u.y+=y
 		
+		u.moved=true
+
 		--if we aren't still in range,
 		--do nothing
 		if(not e_chk_rng(u,eu)) then
-			u.idle=true
+			u.attacked=true
 			return
-		else e_tgt_closest(u,eu)
+		else damage_unit(u,eu.wepdmg)
 		end
-	else e_tgt_closest(u,eu)
+	else damage_unit(u,eu.wepdmg)
 	end
 	
-	u.idle=true
+	u.moved=true
+	u.attacked=true
 end
 
 -- if target in range then true
@@ -143,29 +146,4 @@ function e_chk_rng(u,eu)
     if(sgn(xstep)<0 or sgn(ystep)<0) then return false
     else return true
     end
-end
-
-function e_tgt_closest(u,eu)
-    --if(eu==nil) then err=true return  end
-    eu.hp-=u.wepdmg
-    if(eu.hp<=0) then del(units,eu) end
-end
-
--- if no idle units, return nil
-function e_get_idle()
-    for u in all(units) do
-        if(not u.player and not u.idle) then 
-            return u 
-        end
-    end
-    
-    return nil
-end
-
-function e_all_idle()
-    for u in all(units) do
-        if(u.idle==false) return false
-    end
-    
-    return true
 end

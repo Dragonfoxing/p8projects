@@ -35,15 +35,15 @@ function _init()
 end
 
 function _update()
-	_update_frame()
+	frame_update()
 	
-    if(phase<3) then pturn_loop()
-	else eturn_loop()
+    if(phase<3) then loop_player_turn()
+	else loop_enemy_turn()
 	end
 	
 end
 
-function _update_frame()
+function frame_update()
 	--frame stuff
 	if frame==15 then frame=0
 	else frame+=1
@@ -52,13 +52,7 @@ end
 
 function _draw()
 	cls()
-	
-	local e_idle=0
-	
-	for u in all(units) do
-		if(not u.player and not u.idle) then e_idle+=1 end
-	end
-	
+
 	_drawborders()
 	draw_units()
 	
@@ -70,10 +64,15 @@ function _draw()
 	
 	draw_cursor()
 	
-	
 	_display_topbar()
 	
 	if(debug) then
+		local e_idle=0
+	
+		for u in all(units) do
+			if(not u.player and not u.idle) then e_idle+=1 end
+		end
+
 		print("phase:"..phase)
 		print("units:"..#units)
 		print("idle enemies:"..e_idle)
