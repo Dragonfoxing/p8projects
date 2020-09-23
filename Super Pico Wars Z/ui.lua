@@ -42,10 +42,26 @@ function _draw_commandbox()
 	line(127,96,127,127)
 	line(96,127,127,127)
 	
-	print("attack",98,99)
-	print("move",98,106)
-	print("harden",98,113)
-	print("prepare",98,120)
+	if(cmd_pos==0 and not hovered.moved) then 
+		print("attack",98,99,8)
+		color(7)
+	elseif(hovered.moved) then
+		print("attack",98,99,0)
+		color(7)
+
+	elseprint("attack",98,99) end
+	if(cmd_pos==1) then
+		print("move",98,106,8)
+		color(7)
+	else print("move",98,106) end
+	if(cmd_pos==2) then
+		print("harden",98,113,8)
+		color(7)
+	else print("harden",98,113) end
+	if(cmd_pos==3) then
+		print("prepare",98,120,8)
+		color(7)
+	else print("prepare",98,120) end
 end
 
 function _draw_optionbox()

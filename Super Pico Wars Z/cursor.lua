@@ -21,7 +21,9 @@ function update_cursor()
 		
 		check_hovered()
 	end
-	
+    
+    
+	--[[
 	if(phase==0) then
 		if(btnp(4) and hovered!=nil and hovered.player and not is_unit_idle(hovered)) then
 		 selected=hovered
@@ -74,6 +76,8 @@ function update_cursor()
 			end
 		end
 	end
+ ]]
+ 
 end
 
 function update_cursor_spr()

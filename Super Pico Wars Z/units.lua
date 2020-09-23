@@ -11,9 +11,10 @@ unit.spr=20
 unit.teamspr=28
 unit.hp=8
 unit.sh=4
-unit.moved=false
+unit.moved=true
 unit.attacked=false
 unit.hardened=false
+unit.damaged=false
 unit.move=2
 unit.wepdmg=2
 unit.weprng=6
@@ -106,13 +107,41 @@ end
 --misc functions
 
 function damage_unit(u,n)
+	-- set up damage value and message string
+	msg=""
+	dmg=0
+
+	-- if there's shields, do damage to them
 	if(u.sh>0) then
+		-- do less damage if hardened
 		--backslash = int div
-		if(u.hardened) then u.sh-=(n\2)
-		else u.sh-=n end
-		if(u.sh<0) u.sh=0
-	else u.hp -= n end
-	if(not is_unit_alive(u)) then del(units,u) end
+		if(u.hardened) then 
+			dmg=n\2
+		else dmg=n
+		end
+		-- do damage
+		u.sh-=dmg
+		-- set up message
+		msg=get_unit_name_str(u).."took "..tostr(dmg).." to shields."
+		-- if shields were broken by this attack,
+		-- set them to 0 and change the message
+		if(u.sh<=0) then 
+			u.sh=0
+			msg=get_unit_name_str(u).." was stripped of shields!"
+		end
+	-- else do damage to hp
+	else 
+		u.hp -= n 
+		msg=get_unit_name_str(u).." took "..tostr(dmg).." to its hull."
+	end
+	u.damaged=true
+	if(not is_unit_alive(u)) then 
+		del(units,u)
+		msg=get_unit_name_str(u).." was destroyed!"
+	end
+
+	-- add the results to the log
+	add_message(msg)
 end
 
 function move_unit(u,x,y)
@@ -140,12 +169,23 @@ function get_next_ready_unit(player)
     end
 end
 
+function get_unit_name_str(u)
+	local team=""
+	if(u.player) then team="(pl)"
+	else team="(en)"
+	end
+
+	return u.name..team
+end
+
 function ready_units(player)
 	for u in all(units) do
 		if(u.player==player) then
 			u.moved=false
 			u.attacked=false
 			u.hardened=false
+			if(not u.damaged and u.sh<8) then u.sh+=1
+			elseif(u.damaged) then u.damaged=false end
 		end
 	end
 end

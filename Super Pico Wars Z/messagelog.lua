@@ -2,6 +2,6 @@
 
 messages={}
 
-function add_message()
-
+function add_message(msg)
+    add(messages,msg)
 end
