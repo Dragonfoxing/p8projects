@@ -11,18 +11,18 @@ function test_enemy_turn()
 end
 
 function loop_player_turn()
+	if(check_if_out_of_moves(true)) then end_player_turn() end
 	if(not show_cmds) then
 		update_cursor()
 		player_update()
-	else if(show_cmds) then handle_commands_menu() end
+	elseif(show_cmds) then handle_commands_menu() end
 end
 
 function end_player_turn()
 	ready_units(false)
 
-	phase=3
 	turn=1
-	command=0
+	command=nil
 end
 
 function loop_enemy_turn()
@@ -37,5 +37,5 @@ function end_enemy_turn()
 	
 	phase=0
 	turn=0
-	command=0
+	command=nil
 end

@@ -17,7 +17,6 @@ function update_cursor()
 	
 	if(cursor_moved()) do
 		--check if unit underneath
-		hovered=nil
 		
 		check_hovered()
 	end
@@ -97,6 +96,8 @@ function move_cursor()
 end
 
 function check_hovered()
+	hovered=nil
+	
 	for u in all(units) do
 		if(u.x==px and u.y==py) hovered=u
 	end

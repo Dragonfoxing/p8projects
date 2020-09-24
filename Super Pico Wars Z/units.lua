@@ -11,7 +11,7 @@ unit.spr=20
 unit.teamspr=28
 unit.hp=8
 unit.sh=4
-unit.moved=true
+unit.moved=false
 unit.attacked=false
 unit.hardened=false
 unit.damaged=false
@@ -85,6 +85,7 @@ function draw_units()
 		spr(u.teamspr, gposx(u.x), gposy(u.y))
 		if(u==selected) spr(11,gposx(u.x),gposy(u.y))
 		if(not is_unit_idle(u) and u.player) spr(27,gposx(u.x),gposy(u.y))
+		if(u.hardened) spr(59,gposx(u.x),gposy(u.y))
 	end
 end
 
@@ -145,8 +146,8 @@ function damage_unit(u,n)
 end
 
 function move_unit(u,x,y)
-	u.x+=x
-	u.y+=y
+	u.x=x
+	u.y=y
 	u.moved=true
 end
 

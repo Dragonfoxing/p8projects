@@ -27,8 +27,8 @@ opt_pos_max=0
 
 --0=player,1=enemy
 turn=0
---0=nothing,1=move,2=attack,3=defend?
-command=0
+--0=move,1=attack,2=harden,3=pass/prep,nil=nil
+command=nil
 --0=pturn,1=pmove,2=patk,3=enemy
 phase=0
 
@@ -36,7 +36,7 @@ function _init()
 	init_units()
     phase=0
     turn=0
-    command=0
+    command=nil
 	check_hovered()
 end
 
@@ -64,11 +64,14 @@ function _draw()
 	cls()
 
 	_drawborders()
+
+	draw_cursor()
+	
 	draw_units()
 	
 	if(turn==0) then
-		if(command==1) then drawmove()
-		elseif(command==2) then drawfirelist()
+		if(command==0) then drawmove()
+		elseif(command==1) then drawfirelist()
 		end
 	end
 
@@ -80,7 +83,7 @@ function _draw()
 	end
  ]]
 
-	draw_cursor()
+	
 	
 	_display_topbar()
 	
