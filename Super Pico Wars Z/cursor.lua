@@ -86,12 +86,12 @@ function update_cursor_spr()
 end
 
 function move_cursor()
-	if btnp(1) and px<grid then px+=1
+	if btnp(1) and px<grid-1 then px+=1
 	elseif btnp(0) and px>0 then px-=1
 	end
 	
 	if btnp(2) and py>0 then py-=1
-	elseif btnp(3) and py<grid then py+=1
+	elseif btnp(3) and py<grid-1 then py+=1
 	end
 end
 

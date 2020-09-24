@@ -1,0 +1,6 @@
+Bugfixes
+
+- can select enemies for actions (but do nothing with them)
+- can Cancel out of commands menu but can't get back in and options menu causes error
+- Pass/Prepare still doesn't work
+- 
