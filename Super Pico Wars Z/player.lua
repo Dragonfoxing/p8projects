@@ -79,6 +79,7 @@ function handle_commands_menu()
 
     if(btnp(5)) then
         show_cmds=false
+        selected=nil
         command=0
         return
     end
