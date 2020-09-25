@@ -50,17 +50,20 @@ function _draw_commandbox()
 		color(7)
 
 	else print("move",98,99) end
-	if(cmd_pos==1) then
+	if(cmd_pos==1 and not hovered.attacked) then
 		print("attack",98,106,8)
+		color(7)
+	elseif(hovered.attacked) then
+		print("attack",98,106,0)
 		color(7)
 	else print("attack",98,106) end
 	if((selected.moved or selected.attacked)) then
-		print("harden",98,113,0)
+		print("defend",98,113,0)
 		color(7)
 	elseif(cmd_pos==2) then
-		print("harden",98,113,8)
+		print("defend",98,113,8)
 		color(7)
-	else print("harden",98,113) end
+	else print("defend",98,113) end
 	if(cmd_pos==3) then
 		print("pass",98,120,8)
 		color(7)

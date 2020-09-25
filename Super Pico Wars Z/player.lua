@@ -75,7 +75,7 @@ end
 
 function handle_commands_menu()
     if(btnp(3) and cmd_pos<cmd_pos_max) then
-        if(cmd_pos==0 and selected.attacked) then cmd_pos+=2
+        if(cmd_pos==0 and selected.attacked) then cmd_pos+=3
         elseif(cmd_pos==1 and (selected.attacked or selected.moved)) then cmd_pos+=2
         else cmd_pos+=1 end
     elseif(btnp(3) and cmd_pos==cmd_pos_max) then
@@ -84,7 +84,7 @@ function handle_commands_menu()
     elseif(btnp(2) and cmd_pos>0) then
         if(cmd_pos==1 and selected.moved) then return
         elseif(cmd_pos==2 and selected.attacked) then cmd_pos-=2
-        elseif(cmd_pos==3 and (selected.attacked or selected.moved)) then cmd_pos-=2
+        elseif(cmd_pos==3 and selected.attacked) then cmd_pos-=3
         else cmd_pos-=1 end
     elseif(btnp(2) and cmd_pos==0) then cmd_pos=cmd_pos_max
     end
@@ -98,9 +98,15 @@ function handle_commands_menu()
 
     if(btnp(4)) then
         show_cmds=false
-        if(cmd_pos==0 and selected.moved) then return
-        elseif(cmd_pos==1 and selected.attacked) then return
-        elseif(cmd_pos==2 and (selected.moved or selected.attacked)) then return
+        if(cmd_pos==0 and selected.moved) then
+            cmd_pos=1
+            return
+        elseif(cmd_pos==1 and selected.attacked) then
+            cmd_pos=0
+            return
+        elseif(cmd_pos==2 and (selected.moved or selected.attacked)) then
+            cmd_pos=3
+            return
         end
 
         command=cmd_pos

@@ -3,4 +3,15 @@ Bugfixes
 - FIXED can select enemies for actions (but do nothing with them)
 - FIXED can Cancel out of commands menu but can't get back in and options menu causes error
 - Pass/Prepare still doesn't work
--> treating as pass rather than Prepare or Disable
+-> DONE treating as pass rather than Prepare or Disable
+- FIXED if attack has been done, menu still lets player Attack (but nothing happens)
+-> menu no longer allows you to attempt and fail to attack twice
+- FIXED Menu doesn't show Attack greyed out when it is unavailable
+
+Features
+
+- Options menu doesn't show up on Cancel with no selected ship
+
+Other
+
+- "Harden" is now "Defend" for readability sake
