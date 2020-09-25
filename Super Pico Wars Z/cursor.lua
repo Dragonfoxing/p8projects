@@ -20,63 +20,6 @@ function update_cursor()
 		
 		check_hovered()
 	end
-    
-    
-	--[[
-	if(phase==0) then
-		if(btnp(4) and hovered!=nil and hovered.player and not is_unit_idle(hovered)) then
-		 selected=hovered
-		 phase=1
-		 get_movelist()
-		end
-	elseif(phase==1) then
-		if(btnp(4) and contains_move(px,py)) then
-			selected.x=px
-			selected.y=py
-			selected.moved=true
-			movelist=nil
-			
-			getfirelist(true)
-			
-			check_hovered()
-			phase=2
-		elseif(btnp(5)) then
-			selected=nil
-			phase=0
-			hovered=nil
-			movelist=nil
-			check_hovered()
-		end
-	elseif(phase==2) then
-		--selecting own self for dmg
-		--ends ship selection, no dmg
-		if(btnp(4) and hovered==selected) then
-			selected.attacked=true
-			selected=nil
-			hovered=nil
-			check_hovered()
-			if(check_if_out_of_moves(true)==true) then phase=3
-			else
-				phase=0
-			end
-		elseif(btnp(4) and contains_target(hovered)) then
-			--hovered.hp-=selected.wepdmg
-			damage_unit(hovered,selected.wepdmg)
-			
-			selected.attacked=true
-			selected=nil
-			hovered=nil
-			movelist=nil
-			
-			check_hovered()
-			if(check_if_out_of_moves(true)) then phase=3
-			else
-				phase=0
-			end
-		end
-	end
- ]]
- 
 end
 
 function update_cursor_spr()

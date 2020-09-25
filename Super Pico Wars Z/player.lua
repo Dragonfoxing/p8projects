@@ -6,6 +6,7 @@ function player_update()
     bring up the options menu
     ]]
     if(command==nil and btnp(4) and hovered!=nil and not show_opts and not is_unit_idle(hovered)) then
+        if(not hovered.player) then return end
         show_cmds=true
         selected=hovered
         if(selected.moved) then cmd_pos=1 end
@@ -57,6 +58,13 @@ function player_update()
 
             cmd_pos=0
             check_hovered()
+        elseif(btnp(5)) then
+            selected=nil
+            movelist=nil
+            command=nil
+
+            cmd_pos=0
+            check_hovered()
         end
     elseif(command==2) then
         
@@ -70,17 +78,21 @@ function handle_commands_menu()
         if(cmd_pos==0 and selected.attacked) then cmd_pos+=2
         elseif(cmd_pos==1 and (selected.attacked or selected.moved)) then cmd_pos+=2
         else cmd_pos+=1 end
+    elseif(btnp(3) and cmd_pos==cmd_pos_max) then
+        if(selected.moved) then cmd_pos=1
+        else cmd_pos=0 end
     elseif(btnp(2) and cmd_pos>0) then
         if(cmd_pos==1 and selected.moved) then return
         elseif(cmd_pos==2 and selected.attacked) then cmd_pos-=2
         elseif(cmd_pos==3 and (selected.attacked or selected.moved)) then cmd_pos-=2
         else cmd_pos-=1 end
+    elseif(btnp(2) and cmd_pos==0) then cmd_pos=cmd_pos_max
     end
-
+    
     if(btnp(5)) then
         show_cmds=false
         selected=nil
-        command=0
+        command=nil
         return
     end
 
@@ -101,6 +113,15 @@ function handle_commands_menu()
             harden_shields(selected)
             selected=nil
             command=nil
+            cmd_pos=0
+            check_hovered()
+        elseif(command==3) then
+            --just doing "pass" for now
+            selected.moved=true
+            selected.attacked=true
+            selected=nil
+            command=nil
+            cmd_pos=0
             check_hovered()
         end
 

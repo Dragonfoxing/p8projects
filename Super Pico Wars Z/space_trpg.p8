@@ -216,9 +216,9 @@ function _draw_commandbox()
 		color(7)
 	else print("harden",98,113) end
 	if(cmd_pos==3) then
-		print("prepare",98,120,8)
+		print("pass",98,120,8)
 		color(7)
-	else print("prepare",98,120) end
+	else print("pass",98,120) end
 end
 
 function _draw_optionbox()
@@ -309,63 +309,6 @@ function update_cursor()
 		
 		check_hovered()
 	end
-    
-    
-	--[[
-	if(phase==0) then
-		if(btnp(4) and hovered!=nil and hovered.player and not is_unit_idle(hovered)) then
-		 selected=hovered
-		 phase=1
-		 get_movelist()
-		end
-	elseif(phase==1) then
-		if(btnp(4) and contains_move(px,py)) then
-			selected.x=px
-			selected.y=py
-			selected.moved=true
-			movelist=nil
-			
-			getfirelist(true)
-			
-			check_hovered()
-			phase=2
-		elseif(btnp(5)) then
-			selected=nil
-			phase=0
-			hovered=nil
-			movelist=nil
-			check_hovered()
-		end
-	elseif(phase==2) then
-		--selecting own self for dmg
-		--ends ship selection, no dmg
-		if(btnp(4) and hovered==selected) then
-			selected.attacked=true
-			selected=nil
-			hovered=nil
-			check_hovered()
-			if(check_if_out_of_moves(true)==true) then phase=3
-			else
-				phase=0
-			end
-		elseif(btnp(4) and contains_target(hovered)) then
-			--hovered.hp-=selected.wepdmg
-			damage_unit(hovered,selected.wepdmg)
-			
-			selected.attacked=true
-			selected=nil
-			hovered=nil
-			movelist=nil
-			
-			check_hovered()
-			if(check_if_out_of_moves(true)) then phase=3
-			else
-				phase=0
-			end
-		end
-	end
- ]]
- 
 end
 
 function update_cursor_spr()
@@ -787,6 +730,7 @@ function player_update()
     bring up the options menu
     ]]
     if(command==nil and btnp(4) and hovered!=nil and not show_opts and not is_unit_idle(hovered)) then
+        if(not hovered.player) then return end
         show_cmds=true
         selected=hovered
         if(selected.moved) then cmd_pos=1 end
@@ -838,6 +782,13 @@ function player_update()
 
             cmd_pos=0
             check_hovered()
+        elseif(btnp(5)) then
+            selected=nil
+            movelist=nil
+            command=nil
+
+            cmd_pos=0
+            check_hovered()
         end
     elseif(command==2) then
         
@@ -851,17 +802,21 @@ function handle_commands_menu()
         if(cmd_pos==0 and selected.attacked) then cmd_pos+=2
         elseif(cmd_pos==1 and (selected.attacked or selected.moved)) then cmd_pos+=2
         else cmd_pos+=1 end
+    elseif(btnp(3) and cmd_pos==cmd_pos_max) then
+        if(selected.moved) then cmd_pos=1
+        else cmd_pos=0 end
     elseif(btnp(2) and cmd_pos>0) then
         if(cmd_pos==1 and selected.moved) then return
         elseif(cmd_pos==2 and selected.attacked) then cmd_pos-=2
         elseif(cmd_pos==3 and (selected.attacked or selected.moved)) then cmd_pos-=2
         else cmd_pos-=1 end
+    elseif(btnp(2) and cmd_pos==0) then cmd_pos=cmd_pos_max
     end
-
+    
     if(btnp(5)) then
         show_cmds=false
         selected=nil
-        command=0
+        command=nil
         return
     end
 
@@ -882,6 +837,15 @@ function handle_commands_menu()
             harden_shields(selected)
             selected=nil
             command=nil
+            cmd_pos=0
+            check_hovered()
+        elseif(command==3) then
+            --just doing "pass" for now
+            selected.moved=true
+            selected.attacked=true
+            selected=nil
+            command=nil
+            cmd_pos=0
             check_hovered()
         end
 

@@ -62,9 +62,9 @@ function _draw_commandbox()
 		color(7)
 	else print("harden",98,113) end
 	if(cmd_pos==3) then
-		print("prepare",98,120,8)
+		print("pass",98,120,8)
 		color(7)
-	else print("prepare",98,120) end
+	else print("pass",98,120) end
 end
 
 function _draw_optionbox()
