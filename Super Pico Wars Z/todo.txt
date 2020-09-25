@@ -7,11 +7,6 @@ Bugfixes
 - FIXED if attack has been done, menu still lets player Attack (but nothing happens)
 -> menu no longer allows you to attempt and fail to attack twice
 - FIXED Menu doesn't show Attack greyed out when it is unavailable
-
-Features
-
-- NEXT Options menu doesn't show up on Cancel with no selected ship
-
-Other
-
 - DONE "Harden" is now "Defend" for readability sake
+- DONE Options menu doesn't show up on Cancel with no selected ship
+- Options menu does not function

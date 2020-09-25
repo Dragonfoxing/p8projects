@@ -12,10 +12,11 @@ end
 
 function loop_player_turn()
 	if(check_if_out_of_moves(true)) then end_player_turn() end
-	if(not show_cmds) then
+	if(not show_cmds and not show_opts) then
 		update_cursor()
 		player_update()
-	elseif(show_cmds) then handle_commands_menu() end
+	elseif(show_cmds) then handle_commands_menu()
+	elseif(show_opts) then handle_options_menu() end
 end
 
 function end_player_turn()

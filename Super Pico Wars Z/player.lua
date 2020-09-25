@@ -10,6 +10,8 @@ function player_update()
         show_cmds=true
         selected=hovered
         if(selected.moved) then cmd_pos=1 end
+    elseif(command==nil and btnp(5) and not show_cmds) then
+        show_opts=true
     end
     --[[
     if(not show_opts and not show_cmds and btnp(5)) then
@@ -134,4 +136,8 @@ function handle_commands_menu()
         return
     end
     --TODO: handle doing commands
+end
+
+function handle_options_menu()
+    if(btnp(5)) then show_opts=false end
 end
