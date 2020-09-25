@@ -10,8 +10,8 @@ Bugfixes
 
 Features
 
-- Options menu doesn't show up on Cancel with no selected ship
+- NEXT Options menu doesn't show up on Cancel with no selected ship
 
 Other
 
-- "Harden" is now "Defend" for readability sake
+- DONE "Harden" is now "Defend" for readability sake
