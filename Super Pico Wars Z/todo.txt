@@ -9,4 +9,5 @@ Bugfixes
 - FIXED Menu doesn't show Attack greyed out when it is unavailable
 - DONE "Harden" is now "Defend" for readability sake
 - DONE Options menu doesn't show up on Cancel with no selected ship
-- Options menu does not function
+- FIXED Options menu does not function
+-> only restart is available for now

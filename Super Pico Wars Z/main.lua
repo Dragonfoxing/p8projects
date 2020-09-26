@@ -75,16 +75,6 @@ function _draw()
 		end
 	end
 
-	--[[
-	if(phase<3) then
-		if(phase==1) then drawmove()
-		elseif(phase==2) then drawfirelist()
-		end
-	end
- ]]
-
-	
-	
 	_display_topbar()
 	
 	if(debug) then

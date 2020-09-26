@@ -72,6 +72,8 @@ end
 
 function _draw_optionbox()
 	--bg & color reset
+	--[[ leaving this here for when
+	--I have more options
 	rectfill(96,96,127,127,1)
 	color(7)
 	--borders
@@ -79,8 +81,16 @@ function _draw_optionbox()
 	line(96,96,96,127)
 	line(127,96,127,127)
 	line(96,127,127,127)
-	
-	print("restart",98,99)
+	]]
+	rectfill(96,96,127,106,1)
+	color(7)
+
+	rect(96,96,127,106)
+
+	if(opt_pos==0) then
+		print("restart",98,99,8)
+		color(7)
+	else print("restart",98,99) end
 	--print("",98,106)
 	--print("harden",98,113)
 	--print("prepare",98,120)

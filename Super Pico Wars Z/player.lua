@@ -68,10 +68,6 @@ function player_update()
             cmd_pos=0
             check_hovered()
         end
-    elseif(command==2) then
-        
-    elseif(command==3) then
-
     end
 end
 
@@ -140,4 +136,8 @@ end
 
 function handle_options_menu()
     if(btnp(5)) then show_opts=false end
+    if(opt_pos==0 and btnp(4)) then
+        -- how to reload cart in code?
+        reset_game()
+    end
 end
