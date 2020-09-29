@@ -11,3 +11,6 @@ Bugfixes
 - DONE Options menu doesn't show up on Cancel with no selected ship
 - FIXED Options menu does not function
 -> only restart is available for now
+
+- Game over screen does not show
+- 

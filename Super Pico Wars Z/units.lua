@@ -179,6 +179,14 @@ function get_unit_name_str(u)
 	return u.name..team
 end
 
+function is_team_dead(player)
+	for u in all(units) do
+		if(u.player==player) return false
+	end
+
+	return true
+end
+
 function ready_units(player)
 	for u in all(units) do
 		if(u.player==player) then

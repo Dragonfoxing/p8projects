@@ -145,3 +145,13 @@ function _topbar_brd()
 	line(0,0,0,10)
 	line(127,0,127,10)
 end
+
+function show_game_over()
+	if(turn==0) then
+		print("you won! :D", 45, 90)
+	elseif(turn==1) then
+		print("You lost! D:", 44, 90)
+	end
+
+	print("press (c)onfirm to play again!", 4, 100)
+end

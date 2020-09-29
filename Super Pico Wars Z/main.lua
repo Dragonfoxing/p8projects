@@ -25,6 +25,7 @@ cmd_pos_max=3
 opt_pos=0
 opt_pos_max=0
 
+game_over=false
 --0=player,1=enemy
 turn=0
 --0=move,1=attack,2=harden,3=pass/prep,nil=nil
@@ -41,16 +42,20 @@ function _init()
 end
 
 function _update()
-	frame_update()
-	
-	if(turn==0) then loop_player_turn()
-	else loop_enemy_turn() end
+	frame_update()]
 
-	--[[
-    if(phase<3) then loop_player_turn()
-	else loop_enemy_turn()
+	if(not game_over) then
+		if(is_team_dead(true)) then
+			turn=1
+			game_over=true
+		elseif(is_team_dead(false)) then
+			turn=0
+			game_over=true
+		elseif(turn==0) then loop_player_turn()
+		else loop_enemy_turn() end
+	else
+		if(btnp(4)) then reset_game() end
 	end
-	]]
 end
 
 function frame_update()
@@ -59,7 +64,6 @@ function frame_update()
 	else frame+=1
 	end
 end
-
 function _draw()
 	cls()
 
@@ -69,30 +73,35 @@ function _draw()
 	
 	draw_units()
 	
-	if(turn==0) then
-		if(command==0) then drawmove()
-		elseif(command==1) then drawfirelist()
-		end
-	end
+	if(not game_over) then
 
-	_display_topbar()
-	
-	if(debug) then
-		local e_idle=0
-	
-		for u in all(units) do
-			if(not u.player and not u.idle) then e_idle+=1 end
+		if(turn==0) then
+			if(command==0) then drawmove()
+			elseif(command==1) then drawfirelist()
+			end
 		end
 
-		print("phase:"..phase)
-		print("units:"..#units)
-		print("idle enemies:"..e_idle)
-		if(err) print("error encountered!")
-		if(movelist) print("moves:"..#movelist)
+		_display_topbar()
+		
+		if(debug) then
+			local e_idle=0
+		
+			for u in all(units) do
+				if(not u.player and not u.idle) then e_idle+=1 end
+			end
+
+			print("phase:"..phase)
+			print("units:"..#units)
+			print("idle enemies:"..e_idle)
+			if(err) print("error encountered!")
+			if(movelist) print("moves:"..#movelist)
+		end
+		
+		--_draw_commandbox()
+		if(show_opts) then _draw_optionbox()
+		elseif(show_cmds) then _draw_commandbox() end
+		--display_unit_data()
+	else
+		show_game_over()
 	end
-	
-	--_draw_commandbox()
-    if(show_opts) then _draw_optionbox()
-    elseif(show_cmds) then _draw_commandbox() end
-	--display_unit_data()
 end
