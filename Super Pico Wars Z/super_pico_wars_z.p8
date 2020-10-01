@@ -28,6 +28,7 @@ cmd_pos_max=3
 opt_pos=0
 opt_pos_max=0
 
+game_over=false
 --0=player,1=enemy
 turn=0
 --0=move,1=attack,2=harden,3=pass/prep,nil=nil
@@ -44,16 +45,22 @@ function _init()
 end
 
 function _update()
-	frame_update()
 	
-	if(turn==0) then loop_player_turn()
-	else loop_enemy_turn() end
+	frame_update()
 
-	--[[
-    if(phase<3) then loop_player_turn()
-	else loop_enemy_turn()
+	if(not game_over) then
+		if(is_team_dead(true)) then
+			turn=1
+			game_over=true
+		elseif(is_team_dead(false)) then
+			turn=0
+			game_over=true
+		elseif(turn==0) then loop_player_turn()
+		else loop_enemy_turn() end
+	else
+		if(btnp(4)) then reset_game() end
 	end
-	]]
+
 end
 
 function frame_update()
@@ -62,42 +69,47 @@ function frame_update()
 	else frame+=1
 	end
 end
-
 function _draw()
+	
 	cls()
-
+	
 	_drawborders()
 
 	draw_cursor()
 	
 	draw_units()
 	
-	if(turn==0) then
-		if(command==0) then drawmove()
-		elseif(command==1) then drawfirelist()
-		end
-	end
+	if(not game_over) then
 
-	_display_topbar()
-	
-	if(debug) then
-		local e_idle=0
-	
-		for u in all(units) do
-			if(not u.player and not u.idle) then e_idle+=1 end
+		if(turn==0) then
+			if(command==0) then drawmove()
+			elseif(command==1) then drawfirelist()
+			end
 		end
 
-		print("phase:"..phase)
-		print("units:"..#units)
-		print("idle enemies:"..e_idle)
-		if(err) print("error encountered!")
-		if(movelist) print("moves:"..#movelist)
+		_display_topbar()
+		
+		if(debug) then
+			local e_idle=0
+		
+			for u in all(units) do
+				if(not u.player and not u.idle) then e_idle+=1 end
+			end
+
+			print("phase:"..phase)
+			print("units:"..#units)
+			print("idle enemies:"..e_idle)
+			if(err) print("error encountered!")
+			if(movelist) print("moves:"..#movelist)
+		end
+		
+		--_draw_commandbox()
+		if(show_opts) then _draw_optionbox()
+		elseif(show_cmds) then _draw_commandbox() end
+		--display_unit_data()
+	else
+		show_game_over()
 	end
-	
-	--_draw_commandbox()
-    if(show_opts) then _draw_optionbox()
-    elseif(show_cmds) then _draw_commandbox() end
-	--display_unit_data()
 end
 -->8
 --game loop
@@ -306,6 +318,28 @@ function _topbar_brd()
 	line(0,10,127,10)
 	line(0,0,0,10)
 	line(127,0,127,10)
+end
+
+function show_game_over()
+	if(turn==0) then
+		print("you won! :d", 45, 90)
+	elseif(turn==1) then
+		print("you lost! d:", 44, 90)
+	end
+
+	print("press (c)onfirm to play again!", 4, 100)
+end
+
+function show_game_main_menu()
+	_drawgameframe()
+	spr(18,57,39)
+	spr(37,49,39)
+	spr(46,31,31,2,2)
+	color(7)
+	print("super pico", 50,32)
+	print("wars z", 66, 41)
+	color(6)
+
 end
 -->8
 --cursor
@@ -535,6 +569,14 @@ function get_unit_name_str(u)
 	end
 
 	return u.name..team
+end
+
+function is_team_dead(player)
+	for u in all(units) do
+		if(u.player==player) return false
+	end
+
+	return true
 end
 
 function ready_units(player)
@@ -825,9 +867,10 @@ function handle_commands_menu()
         if(selected.moved) then cmd_pos=1
         else cmd_pos=0 end
     elseif(btnp(2) and cmd_pos>0) then
-        if(cmd_pos==1 and selected.moved) then return
+        if(cmd_pos==1 and selected.moved) then cmd_pos=cmd_pos_max
         elseif(cmd_pos==2 and selected.attacked) then cmd_pos-=2
         elseif(cmd_pos==3 and selected.attacked) then cmd_pos-=3
+        elseif(cmd_pos==3 and selected.moved) then cmd_pos-=2
         else cmd_pos-=1 end
     elseif(btnp(2) and cmd_pos==0) then cmd_pos=cmd_pos_max
     end
