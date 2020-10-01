@@ -42,7 +42,8 @@ function _init()
 end
 
 function _update()
-	frame_update()]
+	
+	frame_update()
 
 	if(not game_over) then
 		if(is_team_dead(true)) then
@@ -56,6 +57,7 @@ function _update()
 	else
 		if(btnp(4)) then reset_game() end
 	end
+
 end
 
 function frame_update()
@@ -65,8 +67,9 @@ function frame_update()
 	end
 end
 function _draw()
+	
 	cls()
-
+	
 	_drawborders()
 
 	draw_cursor()

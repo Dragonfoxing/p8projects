@@ -80,9 +80,10 @@ function handle_commands_menu()
         if(selected.moved) then cmd_pos=1
         else cmd_pos=0 end
     elseif(btnp(2) and cmd_pos>0) then
-        if(cmd_pos==1 and selected.moved) then return
+        if(cmd_pos==1 and selected.moved) then cmd_pos=cmd_pos_max
         elseif(cmd_pos==2 and selected.attacked) then cmd_pos-=2
         elseif(cmd_pos==3 and selected.attacked) then cmd_pos-=3
+        elseif(cmd_pos==3 and selected.moved) then cmd_pos-=2
         else cmd_pos-=1 end
     elseif(btnp(2) and cmd_pos==0) then cmd_pos=cmd_pos_max
     end

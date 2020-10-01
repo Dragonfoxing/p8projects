@@ -155,3 +155,15 @@ function show_game_over()
 
 	print("press (c)onfirm to play again!", 4, 100)
 end
+
+function show_game_main_menu()
+	_drawgameframe()
+	spr(18,57,39)
+	spr(37,49,39)
+	spr(46,31,31,2,2)
+	color(7)
+	print("super pico", 50,32)
+	print("wars z", 66, 41)
+	color(6)
+
+end
