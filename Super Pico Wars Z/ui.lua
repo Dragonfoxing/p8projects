@@ -2,23 +2,33 @@
 
 --defunct game frame drawcall
 function _drawgameframe()
-	line(0,0,0,127)
-	line(127,0,127,127)
-	line(0,0,127,0)
-	line(0,127,127,127)
+	color(2)
+	line(o.x,o.y,o.x,o.y+127)
+	line(o.x+127,o.y,o.x+127,o.y+127)
+	line(o.x,o.y,o.x+127,o.y)
+	line(o.x,o.y+127,o.x+127,o.y+127)
+	color(7)
 	--debug diagonals
 	--line(0,0,127,127)
 	--line(0,127,127,0)
 end
-    
+
+function _draw_battleground_bg()
+	for x=0,grid-1 do
+		for y=0,grid-1 do
+			spr(56,gposx(x),gposy(y))
+		end
+	end
+
+end
 --battle borders drawcall
 function _drawborders()
 	--battlefield horizontal
-	line(gxoff,gyoff-1,gxoff+gxy*8,gyoff-1)
-	line(gxoff,gyoff+gxy*8,gxoff+gxy*8,gyoff+gxy*8)
+	line(gxoff,gyoff-1,gxoff+grid*8,gyoff-1)
+	line(gxoff,gyoff+grid*8,gxoff+grid*8,gyoff+grid*8)
 	--battlefield vertical
-	line(gxoff-1,gyoff-1,gxoff-1,gyoff+gxy*8)
-	line(gxoff+gxy*8,gyoff-1,gxoff+gxy*8,gyoff+gxy*8)
+	line(gxoff-1,gyoff-1,gxoff-1,gyoff+grid*8)
+	line(gxoff+grid*8,gyoff-1,gxoff+grid*8,gyoff+grid*8)
 end
 
 -- defunct draw call
@@ -132,18 +142,18 @@ function _display_topbar()
 	end
 	
 	str=u.name..team..";sh:"..u.sh..";hp:"..u.hp..";move:"..u.move
-	print(str,4,3)
+	print(str,o.x+4,o.y+3)
 end
 
 function _topbar_brd()
 	--bg fill
- rectfill(0,0,127,10,1)
+ rectfill(o.x,o.y,o.x+127,o.y+10,1)
  color(7)
 	--borders
-	line(0,0,127,0)
-	line(0,10,127,10)
-	line(0,0,0,10)
-	line(127,0,127,10)
+	line(o.x,o.y,o.x+127,o.y)
+	line(o.x,o.y+10,o.x+127,o.y+10)
+	line(o.x,o.y,o.x,o.y+10)
+	line(o.x+127,o.y,o.x+127,o.y+10)
 end
 
 function show_game_over()

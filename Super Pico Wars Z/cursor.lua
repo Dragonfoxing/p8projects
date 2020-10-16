@@ -29,12 +29,24 @@ function update_cursor_spr()
 end
 
 function move_cursor()
-	if btnp(1) and px<grid-1 then px+=1
-	elseif btnp(0) and px>0 then px-=1
+	if btnp(1) and px<grid-1 then 
+		px+=1
+		o.x+=gxy
+		camera(o.x,o.y)
+	elseif btnp(0) and px>0 then 
+		px-=1
+		o.x-=gxy
+		camera(o.x,o.y)	
 	end
 	
-	if btnp(2) and py>0 then py-=1
-	elseif btnp(3) and py<grid-1 then py+=1
+	if btnp(2) and py>0 then 
+		py-=1
+		o.y-=gxy
+		camera(o.x,o.y)
+	elseif btnp(3) and py<grid-1 then 
+		py+=1
+		o.y+=gxy
+		camera(o.x,o.y)
 	end
 end
 

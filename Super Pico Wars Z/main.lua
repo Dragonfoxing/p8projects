@@ -3,6 +3,11 @@
 px=0
 py=0
 
+--c = cursor pos table
+c={x=0,y=0}
+--o = camera offset table
+o={x=0,y=0}
+
 gxy=8
 gxoff=32
 gyoff=20
@@ -34,9 +39,19 @@ command=nil
 phase=0
 
 function _init()
+	pal(1,129,1	)
 	init_units()
     phase=0
-    turn=0
+	turn=0
+	grid=flr(rnd(20))+8
+	c.x=grid\2-1
+	c.y=grid\2-1
+	px=c.x
+	py=c.y
+	o.x=gposx(px)-56
+	o.y=gposy(py)-56
+	
+	camera(o.x,o.y)
     command=nil
 	check_hovered()
 end
@@ -70,12 +85,16 @@ function _draw()
 	
 	cls()
 	
+	_draw_battleground_bg()
+
 	_drawborders()
 
 	draw_cursor()
 	
 	draw_units()
 	
+	_drawgameframe()
+
 	if(not game_over) then
 
 		if(turn==0) then
