@@ -44,40 +44,40 @@ end
 
 function _draw_commandbox()
 	--bg & color reset
-	rectfill(96,96,127,127,1)
+	rectfill(o.x+96,o.y+96,o.x+127,o.y+127,1)
 	color(7)
 	--borders
-	line(96,96,127,96)
-	line(96,96,96,127)
-	line(127,96,127,127)
-	line(96,127,127,127)
+	line(o.x+96,o.y+96,o.x+127,o.y+96)
+	line(o.x+96,o.y+96,o.x+96,o.y+127)
+	line(o.x+127,o.y+96,o.x+127,o.y+127)
+	line(o.x+96,o.y+127,o.x+127,o.y+127)
 	
 	if(cmd_pos==0 and not hovered.moved) then 
-		print("move",98,99,8)
+		print("move",o.x+98,o.y+99,8)
 		color(7)
 	elseif(hovered.moved) then
-		print("move",98,99,0)
+		print("move",o.x+98,o.y+99,0)
 		color(7)
 
-	else print("move",98,99) end
+	else print("move",o.x+98,o.y+99) end
 	if(cmd_pos==1 and not hovered.attacked) then
-		print("attack",98,106,8)
+		print("attack",o.x+98,o.y+106,8)
 		color(7)
 	elseif(hovered.attacked) then
-		print("attack",98,106,0)
+		print("attack",o.x+98,o.y+106,0)
 		color(7)
-	else print("attack",98,106) end
+	else print("attack",o.x+98,o.y+106) end
 	if((selected.moved or selected.attacked)) then
-		print("defend",98,113,0)
+		print("defend",o.x+98,o.y+113,0)
 		color(7)
 	elseif(cmd_pos==2) then
-		print("defend",98,113,8)
+		print("defend",o.x+98,o.y+113,8)
 		color(7)
-	else print("defend",98,113) end
+	else print("defend",o.x+98,o.y+113) end
 	if(cmd_pos==3) then
-		print("pass",98,120,8)
+		print("pass",o.x+98,o.y+120,8)
 		color(7)
-	else print("pass",98,120) end
+	else print("pass",o.x+98,o.y+120) end
 end
 
 function _draw_optionbox()
