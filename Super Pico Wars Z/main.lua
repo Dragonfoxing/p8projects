@@ -1,18 +1,5 @@
 --MAIN
 --64x64 = center
-px=0
-py=0
-
---c = cursor pos table
-c={x=0,y=0}
---o = camera offset table
-o={x=0,y=0}
-
-gxy=8
-gxoff=32
-gyoff=20
-frame=0
-
 grid=8
 
 hovered=nil
@@ -46,10 +33,8 @@ function _init()
 	grid=flr(rnd(20))+8
 	c.x=grid\2-1
 	c.y=grid\2-1
-	px=c.x
-	py=c.y
-	o.x=gposx(px)-56
-	o.y=gposy(py)-56
+	o.x=gposx(c.x)-56
+	o.y=gposy(c.y)-56
 	
 	camera(o.x,o.y)
     command=nil
@@ -77,8 +62,8 @@ end
 
 function frame_update()
 	--frame stuff
-	if frame==15 then frame=0
-	else frame+=1
+	if fr.c==fr.m then fr.c=0
+	else fr.c+=1
 	end
 end
 function _draw()

@@ -2,7 +2,7 @@
 cursor_spr = 13
 
 function draw_cursor()
-	spr(cursor_spr,gposx(px),gposy(py))
+	spr(cursor_spr,gposx(c.x),gposy(c.y))
 end
 
 function cursor_moved()
@@ -23,28 +23,28 @@ function update_cursor()
 end
 
 function update_cursor_spr()
-	if frame==0 then cursor_spr = 13
-	elseif frame==8 then cursor_spr = 12
+	if fr.c==0 then cursor_spr = 13
+	elseif fr.c>fr.m\2 then cursor_spr = 12
 	end
 end
 
 function move_cursor()
-	if btnp(1) and px<grid-1 then 
-		px+=1
+	if btnp(1) and c.x<grid-1 then 
+		c.x+=1
 		o.x+=gxy
 		camera(o.x,o.y)
-	elseif btnp(0) and px>0 then 
-		px-=1
+	elseif btnp(0) and c.x>0 then 
+		c.x-=1
 		o.x-=gxy
 		camera(o.x,o.y)	
 	end
 	
-	if btnp(2) and py>0 then 
-		py-=1
+	if btnp(2) and c.y>0 then 
+		c.y-=1
 		o.y-=gxy
 		camera(o.x,o.y)
-	elseif btnp(3) and py<grid-1 then 
-		py+=1
+	elseif btnp(3) and c.y<grid-1 then 
+		c.y+=1
 		o.y+=gxy
 		camera(o.x,o.y)
 	end
@@ -54,6 +54,6 @@ function check_hovered()
 	hovered=nil
 	
 	for u in all(units) do
-		if(u.x==px and u.y==py) hovered=u
+		if(u.x==c.x and u.y==c.y) hovered=u
 	end
 end

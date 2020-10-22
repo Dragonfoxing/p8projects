@@ -1,7 +1,7 @@
 --Game Loop
 
 function test_enemy_turn()
-	if(frame==8) then
+	if(fr.c>fr.m\2) then
 		if(check_if_out_of_moves(false)) then
 			end_enemy_turn()
 		else

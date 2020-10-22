@@ -5,6 +5,10 @@ function player_update()
     and the cancel button is hit,
     bring up the options menu
     ]]
+    --pause button (Enter/Start)
+    --interrupt normal pause menu
+    if(btn(6)) poke(0x5f30,1)
+    
     if(command==nil and btnp(4) and hovered!=nil and not show_opts and not is_unit_idle(hovered)) then
         if(not hovered.player) then return end
         show_cmds=true
@@ -27,10 +31,10 @@ function player_update()
     on the commands
     ]]
     if(command==0) then
-        if(btnp(4) and contains_move(px,py)) then
-            move_unit(selected,px,py)
-            px=selected.x
-            py=selected.y
+        if(btnp(4) and contains_move(c.x,c.y)) then
+            move_unit(selected,c.x,c.y)
+            c.x=selected.x
+            c.y=selected.y
             selected=nil
             movelist=nil
             command=nil
@@ -38,8 +42,8 @@ function player_update()
             cmd_pos=0
             check_hovered()
         elseif(btnp(5)) then
-            px=selected.x
-            py=selected.y
+            c.x=selected.x
+            c.y=selected.y
 
             selected=nil
             movelist=nil
@@ -52,8 +56,8 @@ function player_update()
         if(btnp(4) and contains_target(hovered)) then
             damage_unit(hovered, selected.wepdmg)
             selected.attacked=true
-            px=selected.x
-            py=selected.y
+            c.x=selected.x
+            c.y=selected.y
             selected=nil
             movelist=nil
             command=nil
