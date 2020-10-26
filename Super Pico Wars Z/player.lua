@@ -7,7 +7,11 @@ function player_update()
     ]]
     --pause button (Enter/Start)
     --interrupt normal pause menu
-    if(btn(6)) poke(0x5f30,1)
+    if(btn(6)) then 
+        poke(0x5f30,1)
+        if(show_msgs) then show_msgs=false
+        else show_msgs=true end
+    end
     
     if(command==nil and btnp(4) and hovered!=nil and not show_opts and not is_unit_idle(hovered)) then
         if(not hovered.player) then return end

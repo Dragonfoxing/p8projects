@@ -142,7 +142,7 @@ function damage_unit(u,n)
 	end
 
 	-- add the results to the log
-	add_message(msg)
+	log.add(msg)
 end
 
 function move_unit(u,x,y)

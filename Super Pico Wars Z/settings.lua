@@ -13,7 +13,7 @@ txc.y=0
 --frames, current and max
 fr={}
 fr.c=0
-fr.m=15
+fr.m=31
 
 --c = cursor pos table
 c={x=0,y=0}

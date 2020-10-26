@@ -11,6 +11,7 @@ debug=false
 
 show_opts=false
 show_cmds=false
+show_msgs=false
 
 cmd_pos=0
 cmd_pos_max=3
@@ -105,7 +106,8 @@ function _draw()
 		end
 		
 		--_draw_commandbox()
-		if(show_opts) then _draw_optionbox()
+		if(show_msgs) then _draw_messagebox()
+		elseif(show_opts) then _draw_optionbox()
 		elseif(show_cmds) then _draw_commandbox() end
 		--display_unit_data()
 	else

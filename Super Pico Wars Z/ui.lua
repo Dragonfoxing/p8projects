@@ -23,21 +23,29 @@ function _draw_battleground_bg()
 end
 --battle borders drawcall
 function _drawborders()
-	--battlefield horizontal
-	line(gxoff,gyoff-1,gxoff+grid*8,gyoff-1)
-	line(gxoff,gyoff+grid*8,gxoff+grid*8,gyoff+grid*8)
-	--battlefield vertical
-	line(gxoff-1,gyoff-1,gxoff-1,gyoff+grid*8)
-	line(gxoff+grid*8,gyoff-1,gxoff+grid*8,gyoff+grid*8)
+	rect(gxoff-1,gyoff-1,gxoff+grid*8,gyoff+grid*8)
+	
 end
 
 -- defunct draw call
 function _draw_messagebox()
  --bottom panel
+	--[[
 	line(0,127,127,127)
 	line(0,96,127,96)
 	line(0,96,0,127)
 	line(127,96,127,127)
+	--]]
+
+	rectfill(o.x,o.y+64,o.x+127,o.y+127,1)
+	color(7)
+	rect(o.x,o.y+64,o.x+127,o.y+127)
+
+	if(#log!=0) then
+		for i=1,#log do
+			print(log[i],o.x+4,o.y+62+(6*i))
+		end
+	end
 end
 
 --commands&option draw calls
@@ -47,10 +55,7 @@ function _draw_commandbox()
 	rectfill(o.x+96,o.y+96,o.x+127,o.y+127,1)
 	color(7)
 	--borders
-	line(o.x+96,o.y+96,o.x+127,o.y+96)
-	line(o.x+96,o.y+96,o.x+96,o.y+127)
-	line(o.x+127,o.y+96,o.x+127,o.y+127)
-	line(o.x+96,o.y+127,o.x+127,o.y+127)
+	rect(o.x+96,o.y+96,o.x+127,o.y+127)
 	
 	if(cmd_pos==0 and not hovered.moved) then 
 		print("move",o.x+98,o.y+99,8)
@@ -92,15 +97,15 @@ function _draw_optionbox()
 	line(127,96,127,127)
 	line(96,127,127,127)
 	]]
-	rectfill(96,96,127,106,1)
+	rectfill(o.x+96,o.y+96,o.x+127,o.y+106,1)
 	color(7)
 
-	rect(96,96,127,106)
+	rect(o.x+96,o.y+96,o.x+127,o.y+106)
 
 	if(opt_pos==0) then
-		print("restart",98,99,8)
+		print("restart",o.x+98,o.y+99,8)
 		color(7)
-	else print("restart",98,99) end
+	else print("restart",o.x+98,o.y+99) end
 	--print("",98,106)
 	--print("harden",98,113)
 	--print("prepare",98,120)

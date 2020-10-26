@@ -1,10 +1,19 @@
 --message box
 
-messages={}
-messages.max=10
+log={}
+log.max=9
 
-m={s="",x=0,y=0}
+m={s="",i=0}
 
-function add_message(msg)
-    add(messages,msg)
+log.add = function(msg)
+
+    --if we'll be full, clear space
+    if(#log>log.max+1) then
+        --delete at index
+        deli(log,1)
+    end
+
+    add(log,msg)
+    
 end
+
