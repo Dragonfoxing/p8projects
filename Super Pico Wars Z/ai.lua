@@ -16,14 +16,14 @@ function get_movelist()
 	local move=selected.move
 	local xstep=0
 	for i=x-move,x+move,1 do
-		if(i>-1 and i<gxy) then
+		if(i>-1 and i<grid) then
 			--diamond shape
 			xstep=move-abs(x-i)
 			
 			--reverse diamond
 			--xstep=abs(x-i)
 			for j=y-xstep,y+xstep,1 do
-				if(j>-1 and j<gxy) then
+				if(j>-1 and j<grid) then
 					--spr(61,gptox(i),gptoy(j))
 					
 					add(ml,{i,j})

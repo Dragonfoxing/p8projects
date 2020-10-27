@@ -23,3 +23,15 @@ o={x=0,y=0}
 gxy=8
 gxoff=32
 gyoff=20
+
+--unit prefabs
+u_fabs={}
+
+u_fabs.rnd = function()
+    return copy(u_fabs[flr(rnd(#u_fabs))+1])
+end
+
+--corvette, low hp med shields but fast
+add(u_fabs,unit.new("corv",20,4,2,4,2,2))
+--frigate, high hp/shields, low damage/move, high range
+add(u_fabs,unit.new("frig",20,6,10,2,5,2))

@@ -21,6 +21,19 @@ unit.weprng=6
 unit.dist=0
 unit.close=nil
 
+unit.new = function(name,spr,hp,sh,move,rng,dmg)
+	_u = copy(unit)
+	_u.name=name
+	_u.spr=spr
+	_u.hp=hp
+	_u.sh=sh
+	_u.move=move
+	_u.weprng=rng
+	_u.wepdmg=dmg
+
+	return _u
+end
+
 ini_coords={}
 
 units={}
@@ -33,9 +46,9 @@ function init_units()
 	local coords=init_unit_coords()
 	--get our coords
 	for i=0,unit_count-1,1 do
-		local u=copy(unit)
+		local u=u_fabs.rnd()
 		u.player=true
-		u.name="ship "..(i+1)
+		u.name=u.name..(i+1)
 		u.teamspr=29
 		local c=del(coords,coords[1])
 		u.x=flr(c/grid)
@@ -45,10 +58,10 @@ function init_units()
 	end
 	
 	for i=0,unit_count-1,1 do
-		local u=copy(unit)
+		local u=u_fabs.rnd()
 		u.player=false
 		u.teamspr=28
-		u.name="ship "..(i+1)
+		u.name=u.name..(i+1)
 		local c=del(coords,coords[1])
 		u.x=flr(c/grid)
 		u.y=flr(c%grid)
