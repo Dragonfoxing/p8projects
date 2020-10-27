@@ -24,7 +24,7 @@ function get_movelist()
 			--xstep=abs(x-i)
 			for j=y-xstep,y+xstep,1 do
 				if(j>-1 and j<gxy) then
-					--spr(61,gposx(i),gposy(j))
+					--spr(61,gptox(i),gptoy(j))
 					
 					add(ml,{i,j})
 				end
@@ -50,7 +50,7 @@ function check_valid_moves(moves)
 	return moves
 end
 
-function contains_move(x,y)
+function has_move(x,y)
 	for m in all(movelist) do
 		if(m[1]==x and m[2]==y) return true
 	end
@@ -71,7 +71,7 @@ function getfirelist(player)
 	movelist=ml
 end
 
-function contains_target(e)
+function has_target(e)
 	for m in all(movelist) do
 		if(e==m) return true
 	end

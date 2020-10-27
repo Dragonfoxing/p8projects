@@ -65,7 +65,7 @@ function init_unit_coords()
 		local pos=flr(rnd(grid^2))
 		local uniq=true
 		
-		if(not contains(coords,pos)) then
+		if(not has(coords,pos)) then
 			add(coords,pos)
 			n+=1
 		end
@@ -82,10 +82,10 @@ function draw_units()
 		else draw_unit_horiz(u)
 		end
 		
-		spr(u.teamspr, gposx(u.x), gposy(u.y))
-		if(u==selected) spr(11,gposx(u.x),gposy(u.y))
-		if(not is_unit_idle(u) and u.player) spr(27,gposx(u.x),gposy(u.y))
-		if(u.hardened) spr(59,gposx(u.x),gposy(u.y))
+		spr(u.teamspr, gptox(u.x), gptoy(u.y))
+		if(u==selected) spr(11,gptox(u.x),gptoy(u.y))
+		if(not is_unit_idle(u) and u.player) spr(27,gptox(u.x),gptoy(u.y))
+		if(u.hardened) spr(59,gptox(u.x),gptoy(u.y))
 	end
 end
 
@@ -94,7 +94,7 @@ function draw_unit_vert(u)
 	local flp=false
 	if(u.facing==2) flp=true
 	
-	spr(sp,gposx(u.x),gposy(u.y),1,1,false,flp)
+	spr(sp,gptox(u.x),gptoy(u.y),1,1,false,flp)
 end
 
 function draw_unit_horiz(u)
@@ -102,7 +102,7 @@ function draw_unit_horiz(u)
 	local flp=false
 	if(u.facing==3) flp=true
 	
-	spr(sp,gposx(u.x),gposy(u.y),1,1,flp,false)
+	spr(sp,gptox(u.x),gptoy(u.y),1,1,flp,false)
 end
 
 --misc functions

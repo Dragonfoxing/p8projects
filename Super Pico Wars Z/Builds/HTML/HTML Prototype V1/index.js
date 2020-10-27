@@ -1910,12 +1910,12 @@ var IDBFS = {
    var db = e.target.result;
    var transaction = e.target.transaction;
    var fileStore;
-   if (db.objectStoreNames.contains(IDBFS.DB_STORE_NAME)) {
+   if (db.objectStoreNames.has(IDBFS.DB_STORE_NAME)) {
     fileStore = transaction.objectStore(IDBFS.DB_STORE_NAME);
    } else {
     fileStore = db.createObjectStore(IDBFS.DB_STORE_NAME);
    }
-   if (!fileStore.indexNames.contains("timestamp")) {
+   if (!fileStore.indexNames.has("timestamp")) {
     fileStore.createIndex("timestamp", "timestamp", {
      unique: false
     });

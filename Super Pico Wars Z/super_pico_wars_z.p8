@@ -274,7 +274,7 @@ end
 
 function drawmove()
 	for pos in all(movelist) do
-		spr(61,gposx(pos[1]),gposy(pos[2]))
+		spr(61,gptox(pos[1]),gptoy(pos[2]))
 	end
 end
 
@@ -282,7 +282,7 @@ end
 
 function drawfirelist()
 	for e in all(movelist) do
-		spr(43,gposx(e.x),gposy(e.y))
+		spr(43,gptox(e.x),gptoy(e.y))
 	end
 end
 
@@ -346,7 +346,7 @@ end
 cursor_spr = 13
 
 function draw_cursor()
-	spr(cursor_spr,gposx(px),gposy(py))
+	spr(cursor_spr,gptox(px),gptoy(py))
 end
 
 function cursor_moved()
@@ -457,7 +457,7 @@ function init_unit_coords()
 		local pos=flr(rnd(grid^2))
 		local uniq=true
 		
-		if(not contains(coords,pos)) then
+		if(not has(coords,pos)) then
 			add(coords,pos)
 			n+=1
 		end
@@ -474,10 +474,10 @@ function draw_units()
 		else draw_unit_horiz(u)
 		end
 		
-		spr(u.teamspr, gposx(u.x), gposy(u.y))
-		if(u==selected) spr(11,gposx(u.x),gposy(u.y))
-		if(not is_unit_idle(u) and u.player) spr(27,gposx(u.x),gposy(u.y))
-		if(u.hardened) spr(59,gposx(u.x),gposy(u.y))
+		spr(u.teamspr, gptox(u.x), gptoy(u.y))
+		if(u==selected) spr(11,gptox(u.x),gptoy(u.y))
+		if(not is_unit_idle(u) and u.player) spr(27,gptox(u.x),gptoy(u.y))
+		if(u.hardened) spr(59,gptox(u.x),gptoy(u.y))
 	end
 end
 
@@ -486,7 +486,7 @@ function draw_unit_vert(u)
 	local flp=false
 	if(u.facing==2) flp=true
 	
-	spr(sp,gposx(u.x),gposy(u.y),1,1,false,flp)
+	spr(sp,gptox(u.x),gptoy(u.y),1,1,false,flp)
 end
 
 function draw_unit_horiz(u)
@@ -494,7 +494,7 @@ function draw_unit_horiz(u)
 	local flp=false
 	if(u.facing==3) flp=true
 	
-	spr(sp,gposx(u.x),gposy(u.y),1,1,flp,false)
+	spr(sp,gptox(u.x),gptoy(u.y),1,1,flp,false)
 end
 
 --misc functions
@@ -623,7 +623,7 @@ function get_movelist()
 			--xstep=abs(x-i)
 			for j=y-xstep,y+xstep,1 do
 				if(j>-1 and j<gxy) then
-					--spr(61,gposx(i),gposy(j))
+					--spr(61,gptox(i),gptoy(j))
 					
 					add(ml,{i,j})
 				end
@@ -649,7 +649,7 @@ function check_valid_moves(moves)
 	return moves
 end
 
-function contains_move(x,y)
+function has_move(x,y)
 	for m in all(movelist) do
 		if(m[1]==x and m[2]==y) return true
 	end
@@ -670,7 +670,7 @@ function getfirelist(player)
 	movelist=ml
 end
 
-function contains_target(e)
+function has_target(e)
 	for m in all(movelist) do
 		if(e==m) return true
 	end
@@ -766,7 +766,7 @@ function copy(o)
 end
 
 --for sequences only!
-function contains(t,o)
+function has(t,o)
 	if(type(o) == 'table') return false
 	for i in all(t) do
 		if(i==o) return true
@@ -777,11 +777,11 @@ end
 
 --project-specific
 --grid-to-display conversion
-function gposx(x)
+function gptox(x)
 	return gxoff+x*gxy
 end
 
-function gposy(y)
+function gptoy(y)
 	return gyoff+y*gxy
 end
 -->8
@@ -814,7 +814,7 @@ function player_update()
     on the commands
     ]]
     if(command==0) then
-        if(btnp(4) and contains_move(px,py)) then
+        if(btnp(4) and has_move(px,py)) then
             move_unit(selected,px,py)
             px=selected.x
             py=selected.y
@@ -836,7 +836,7 @@ function player_update()
             check_hovered()
         end
     elseif(command==1) then
-        if(btnp(4) and contains_target(hovered)) then
+        if(btnp(4) and has_target(hovered)) then
             damage_unit(hovered, selected.wepdmg)
             selected.attacked=true
             px=selected.x

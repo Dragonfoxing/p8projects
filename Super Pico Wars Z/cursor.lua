@@ -2,7 +2,7 @@
 cursor_spr = 13
 
 function draw_cursor()
-	spr(cursor_spr,gposx(c.x),gposy(c.y))
+	spr(cursor_spr,gptox(c.x),gptoy(c.y))
 end
 
 function cursor_moved()

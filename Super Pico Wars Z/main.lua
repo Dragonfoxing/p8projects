@@ -34,8 +34,8 @@ function _init()
 	grid=flr(rnd(20))+8
 	c.x=grid\2-1
 	c.y=grid\2-1
-	o.x=gposx(c.x)-56
-	o.y=gposy(c.y)-56
+	o.x=gptox(c.x)-56
+	o.y=gptoy(c.y)-56
 	
 	camera(o.x,o.y)
     command=nil

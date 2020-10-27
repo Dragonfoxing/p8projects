@@ -35,7 +35,7 @@ function player_update()
     on the commands
     ]]
     if(command==0) then
-        if(btnp(4) and contains_move(c.x,c.y)) then
+        if(btnp(4) and has_move(c.x,c.y)) then
             move_unit(selected,c.x,c.y)
             c.x=selected.x
             c.y=selected.y
@@ -57,16 +57,19 @@ function player_update()
             check_hovered()
         end
     elseif(command==1) then
-        if(btnp(4) and contains_target(hovered)) then
+        if(btnp(4) and has_target(hovered)) then
             damage_unit(hovered, selected.wepdmg)
             selected.attacked=true
             c.x=selected.x
+            o.x=gptox(c.x)-56
             c.y=selected.y
+            o.y=gptoy(c.y)-56
             selected=nil
             movelist=nil
             command=nil
 
             cmd_pos=0
+            cam(o.x,o.y)
             check_hovered()
         elseif(btnp(5)) then
             selected=nil
