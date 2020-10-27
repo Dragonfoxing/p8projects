@@ -28,10 +28,11 @@ phase=0
 
 function _init()
 	pal(1,129,1	)
+	grid=flr(rnd(10))+8
 	init_units()
     phase=0
 	turn=0
-	grid=flr(rnd(20))+8
+	
 	c.x=grid\2-1
 	c.y=grid\2-1
 	o.x=gptox(c.x)-56

@@ -3,14 +3,6 @@ version 29
 __lua__
 --main
 --64x64 = center
-px=0
-py=0
-
-gxy=8
-gxoff=32
-gyoff=20
-frame=0
-
 grid=8
 
 hovered=nil
@@ -22,6 +14,7 @@ debug=false
 
 show_opts=false
 show_cmds=false
+show_msgs=false
 
 cmd_pos=0
 cmd_pos_max=3
@@ -37,9 +30,18 @@ command=nil
 phase=0
 
 function _init()
+	pal(1,129,1	)
+	grid=flr(rnd(10))+8
 	init_units()
     phase=0
-    turn=0
+	turn=0
+	
+	c.x=grid\2-1
+	c.y=grid\2-1
+	o.x=gptox(c.x)-56
+	o.y=gptoy(c.y)-56
+	
+	camera(o.x,o.y)
     command=nil
 	check_hovered()
 end
@@ -65,20 +67,24 @@ end
 
 function frame_update()
 	--frame stuff
-	if frame==15 then frame=0
-	else frame+=1
+	if fr.c==fr.m then fr.c=0
+	else fr.c+=1
 	end
 end
 function _draw()
 	
 	cls()
 	
+	_draw_battleground_bg()
+
 	_drawborders()
 
 	draw_cursor()
 	
 	draw_units()
 	
+	_drawgameframe()
+
 	if(not game_over) then
 
 		if(turn==0) then
@@ -104,7 +110,8 @@ function _draw()
 		end
 		
 		--_draw_commandbox()
-		if(show_opts) then _draw_optionbox()
+		if(show_msgs) then _draw_messagebox()
+		elseif(show_opts) then _draw_optionbox()
 		elseif(show_cmds) then _draw_commandbox() end
 		--display_unit_data()
 	else
@@ -115,7 +122,7 @@ end
 --game loop
 
 function test_enemy_turn()
-	if(frame==8) then
+	if(fr.c>fr.m\2) then
 		if(check_if_out_of_moves(false)) then
 			end_enemy_turn()
 		else
@@ -176,98 +183,69 @@ end
 
 --defunct game frame drawcall
 function _drawgameframe()
-	line(0,0,0,127)
-	line(127,0,127,127)
-	line(0,0,127,0)
-	line(0,127,127,127)
-	--debug diagonals
-	--line(0,0,127,127)
-	--line(0,127,127,0)
-end
-    
---battle borders drawcall
-function _drawborders()
-	--battlefield horizontal
-	line(gxoff,gyoff-1,gxoff+gxy*8,gyoff-1)
-	line(gxoff,gyoff+gxy*8,gxoff+gxy*8,gyoff+gxy*8)
-	--battlefield vertical
-	line(gxoff-1,gyoff-1,gxoff-1,gyoff+gxy*8)
-	line(gxoff+gxy*8,gyoff-1,gxoff+gxy*8,gyoff+gxy*8)
+	ro(0,0,127,127,2)
+	col(7)
 end
 
--- defunct draw call
+function _draw_battleground_bg()
+	rf(gxoff,gyoff,gptox(grid),gptoy(grid),1)
+	col(7)
+
+end
+--battle borders drawcall
+function _drawborders()
+	r(gxoff-1,gyoff-1,gptox(grid),gptoy(grid))
+end
+
 function _draw_messagebox()
- --bottom panel
-	line(0,127,127,127)
-	line(0,96,127,96)
-	line(0,96,0,127)
-	line(127,96,127,127)
+	--bg
+	rfo(0,64,127,127,1)
+	--border
+	ro(0,64,127,127,7)
+
+	if(#log!=0) then
+		for i=1,#log do
+			po(log[i],4,62+(6*i))
+		end
+	end
 end
 
 --commands&option draw calls
 
 function _draw_commandbox()
-	--bg & color reset
-	rectfill(96,96,127,127,1)
-	color(7)
+	--bg
+	rfo(96,96,127,127,1)
 	--borders
-	line(96,96,127,96)
-	line(96,96,96,127)
-	line(127,96,127,127)
-	line(96,127,127,127)
-	
-	if(cmd_pos==0 and not hovered.moved) then 
-		print("move",98,99,8)
-		color(7)
-	elseif(hovered.moved) then
-		print("move",98,99,0)
-		color(7)
-
-	else print("move",98,99) end
-	if(cmd_pos==1 and not hovered.attacked) then
-		print("attack",98,106,8)
-		color(7)
-	elseif(hovered.attacked) then
-		print("attack",98,106,0)
-		color(7)
-	else print("attack",98,106) end
-	if((selected.moved or selected.attacked)) then
-		print("defend",98,113,0)
-		color(7)
-	elseif(cmd_pos==2) then
-		print("defend",98,113,8)
-		color(7)
-	else print("defend",98,113) end
-	if(cmd_pos==3) then
-		print("pass",98,120,8)
-		color(7)
-	else print("pass",98,120) end
+	ro(96,96,127,127,7)
+	--move cmd
+	if(cmd_pos==0 and not hovered.moved) then po("move",98,99,8)
+	elseif(hovered.moved) then po("move",98,99,0)
+	else po("move",98,99,7) end
+	--atk cmd
+	if(cmd_pos==1 and not hovered.attacked) then po("attack",98,106,8)
+	elseif(hovered.attacked) then po("attack",98,106,0)
+	else po("attack",98,106,7) end
+	--def cmd
+	if((selected.moved or selected.attacked)) then po("defend",98,113,0)
+	elseif(cmd_pos==2) then po("defend",98,113,8)
+	else po("defend",98,113,7) end
+	--pass cmd
+	if(cmd_pos==3) then po("pass",98,120,8)
+	else po("pass",98,120,7) end
+	--col reset
+	col(7)
 end
 
 function _draw_optionbox()
-	--bg & color reset
-	--[[ leaving this here for when
-	--i have more options
-	rectfill(96,96,127,127,1)
-	color(7)
-	--borders
-	line(96,96,127,96)
-	line(96,96,96,127)
-	line(127,96,127,127)
-	line(96,127,127,127)
-	]]
-	rectfill(96,96,127,106,1)
-	color(7)
-
-	rect(96,96,127,106)
+	--bg
+	rfo(96,96,127,106,1)
+	--border
+	ro(96,96,127,106,7)
 
 	if(opt_pos==0) then
-		print("restart",98,99,8)
-		color(7)
-	else print("restart",98,99) end
-	--print("",98,106)
-	--print("harden",98,113)
-	--print("prepare",98,120)
+		po("restart",98,99,8)
+		col(7)
+	else po("restart",98,99,7) end
 end
 
 --combat draw calls
@@ -305,29 +283,25 @@ function _display_topbar()
 	else team="(en)"
 	end
 	
-	str=u.name..team..";sh:"..u.sh..";hp:"..u.hp..";move:"..u.move
-	print(str,4,3)
+	str=u.name..team..";hp:"..u.sh.."/"..u.hp..";mv:"..u.move..";r/d:"..u.weprng.."/"..u.wepdmg
+	po(str,4,3,7)
 end
 
 function _topbar_brd()
-	--bg fill
- rectfill(0,0,127,10,1)
- color(7)
-	--borders
-	line(0,0,127,0)
-	line(0,10,127,10)
-	line(0,0,0,10)
-	line(127,0,127,10)
+	--bg
+	rfo(0,0,127,10,1)
+	--border
+	rect(o.x,o.y,o.x+127,o.y+10,7)
 end
 
 function show_game_over()
 	if(turn==0) then
-		print("you won! :d", 45, 90)
+		po("you won! :d",45,90,7)
 	elseif(turn==1) then
-		print("you lost! d:", 44, 90)
+		po("you lost! d:",44,90,7)
 	end
 
-	print("press (c)onfirm to play again!", 4, 100)
+	po("press (c)onfirm to play again!",4,100,7)
 end
 
 function show_game_main_menu()
@@ -335,9 +309,8 @@ function show_game_main_menu()
 	spr(18,57,39)
 	spr(37,49,39)
 	spr(46,31,31,2,2)
-	color(7)
-	print("super pico", 50,32)
-	print("wars z", 66, 41)
+	po("super pico",50,32,7)
+	po("wars z", 66, 41,7)
 	color(6)
 
 end
@@ -346,7 +319,7 @@ end
 cursor_spr = 13
 
 function draw_cursor()
-	spr(cursor_spr,gptox(px),gptoy(py))
+	spr(cursor_spr,gptox(c.x),gptoy(c.y))
 end
 
 function cursor_moved()
@@ -367,18 +340,30 @@ function update_cursor()
 end
 
 function update_cursor_spr()
-	if frame==0 then cursor_spr = 13
-	elseif frame==8 then cursor_spr = 12
+	if fr.c==0 then cursor_spr = 13
+	elseif fr.c>fr.m\2 then cursor_spr = 12
 	end
 end
 
 function move_cursor()
-	if btnp(1) and px<grid-1 then px+=1
-	elseif btnp(0) and px>0 then px-=1
+	if btnp(1) and c.x<grid-1 then 
+		c.x+=1
+		o.x+=gxy
+		camera(o.x,o.y)
+	elseif btnp(0) and c.x>0 then 
+		c.x-=1
+		o.x-=gxy
+		camera(o.x,o.y)	
 	end
 	
-	if btnp(2) and py>0 then py-=1
-	elseif btnp(3) and py<grid-1 then py+=1
+	if btnp(2) and c.y>0 then 
+		c.y-=1
+		o.y-=gxy
+		camera(o.x,o.y)
+	elseif btnp(3) and c.y<grid-1 then 
+		c.y+=1
+		o.y+=gxy
+		camera(o.x,o.y)
 	end
 end
 
@@ -386,7 +371,7 @@ function check_hovered()
 	hovered=nil
 	
 	for u in all(units) do
-		if(u.x==px and u.y==py) hovered=u
+		if(u.x==c.x and u.y==c.y) hovered=u
 	end
 end
 -->8
@@ -534,7 +519,7 @@ function damage_unit(u,n)
 	end
 
 	-- add the results to the log
-	add_message(msg)
+	log.add(msg)
 end
 
 function move_unit(u,x,y)
@@ -747,6 +732,23 @@ end
 -->8
 --common library
 
+cam = camera
+r = rect
+ro = function(x1,y1,x2,y2,z)
+	rect(o.x+x1,o.y+y1,o.x+x2,o.y+y2,z)
+end
+rf = rectfill
+rfo = function(x1,y1,x2,y2,z)
+	rectfill(o.x+x1,o.y+y1,o.x+x2,o.y+y2,z)
+end
+
+p=print
+
+po=function(s,x,y,z)
+	p(s,o.x+x,o.y+y,z)
+end
+
+col=color
 --distance function - replace args with x1,y1,x2,y2
 function get_unit_dist(u,e)
 	return sqrt((u.x-e.x)^2+(u.y-e.y)^2)
@@ -792,6 +794,14 @@ function player_update()
     and the cancel button is hit,
     bring up the options menu
     ]]
+    --pause button (enter/start)
+    --interrupt normal pause menu
+    if(btn(6)) then 
+        poke(0x5f30,1)
+        if(show_msgs) then show_msgs=false
+        else show_msgs=true end
+    end
+    
     if(command==nil and btnp(4) and hovered!=nil and not show_opts and not is_unit_idle(hovered)) then
         if(not hovered.player) then return end
         show_cmds=true
@@ -814,10 +824,10 @@ function player_update()
     on the commands
     ]]
     if(command==0) then
-        if(btnp(4) and has_move(px,py)) then
-            move_unit(selected,px,py)
-            px=selected.x
-            py=selected.y
+        if(btnp(4) and has_move(c.x,c.y)) then
+            move_unit(selected,c.x,c.y)
+            c.x=selected.x
+            c.y=selected.y
             selected=nil
             movelist=nil
             command=nil
@@ -825,8 +835,8 @@ function player_update()
             cmd_pos=0
             check_hovered()
         elseif(btnp(5)) then
-            px=selected.x
-            py=selected.y
+            c.x=selected.x
+            c.y=selected.y
 
             selected=nil
             movelist=nil
@@ -839,13 +849,16 @@ function player_update()
         if(btnp(4) and has_target(hovered)) then
             damage_unit(hovered, selected.wepdmg)
             selected.attacked=true
-            px=selected.x
-            py=selected.y
+            c.x=selected.x
+            o.x=gptox(c.x)-56
+            c.y=selected.y
+            o.y=gptoy(c.y)-56
             selected=nil
             movelist=nil
             command=nil
 
             cmd_pos=0
+            cam(o.x,o.y)
             check_hovered()
         elseif(btnp(5)) then
             selected=nil
@@ -932,11 +945,50 @@ end
 -->8
 --message box
 
-messages={}
+log={}
+log.max=9
 
-function add_message(msg)
-    add(messages,msg)
+m={s="",i=0}
+
+log.add = function(msg)
+
+    --if we'll be full, clear space
+    if(#log>log.max+1) then
+        --delete at index
+        deli(log,1)
+    end
+
+    add(log,msg)
+    
 end
+
+
+-->8
+--font
+font={}
+font.w=4
+font.h=6
+--characters per line
+font.chl=32
+
+--text cursor
+txc={}
+txc.x=0
+txc.y=0
+
+--frames, current and max
+fr={}
+fr.c=0
+fr.m=31
+
+--c = cursor pos table
+c={x=0,y=0}
+--o = camera offset table
+o={x=0,y=0}
+
+gxy=8
+gxoff=32
+gyoff=20
 __gfx__
 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000033033033cc0000cc000000008000000990000008
 00000000000dd0000d0000000000ddd0000dd00000dd000000000dd00000000000000000000000000000000030000003c000000c0cc00cc00800000990000080

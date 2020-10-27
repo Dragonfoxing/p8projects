@@ -65,9 +65,6 @@ function _draw_optionbox()
 		po("restart",98,99,8)
 		col(7)
 	else po("restart",98,99,7) end
-	--print("",98,106)
-	--print("harden",98,113)
-	--print("prepare",98,120)
 end
 
 --combat draw calls
@@ -105,7 +102,7 @@ function _display_topbar()
 	else team="(en)"
 	end
 	
-	str=u.name..team..";sh:"..u.sh..";hp:"..u.hp..";move:"..u.move
+	str=u.name..team..";hp:"..u.sh.."/"..u.hp..";mv:"..u.move..";r/d:"..u.weprng.."/"..u.wepdmg
 	po(str,4,3,7)
 end
 
